@@ -27,6 +27,14 @@ const distFolderPath = path.join(__dirname, config.folderPath);
 uploadDirectoryFiles(distFolderPath);
 
 function uploadDirectoryFiles(distFolderPath) {
+  // Comprobar si el directorio existe
+  if (!fs.existsSync(distFolderPath)) {
+    console.error(
+      `El directorio '${distFolderPath}' no existe. Verifica que la construcción se haya completado exitosamente.`
+    );
+    return;
+  }
+
   const files = fs.readdirSync(distFolderPath);
 
   if (!files || files.length === 0) {
