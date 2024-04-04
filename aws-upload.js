@@ -1,4 +1,5 @@
-import AWS from "aws-sdk";
+// import AWS from "aws-sdk";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url"; // Import necesario para convertir URL a ruta de archivo
@@ -16,10 +17,12 @@ const config = {
 };
 
 // Initialize S3 Client
-const s3 = new AWS.S3({
-  signatureVersion: "v4",
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+const s3 = new S3Client({
+  region: "eu-north-1",
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
 });
 
 // Resolve full folder path
@@ -64,20 +67,17 @@ async function uploadFile(filePath, fileName) {
 
   // Upload file to S3
   try {
-    await s3
-      .putObject({
+    const data = await s3.send(
+      new PutObjectCommand({
         Bucket: config.s3BucketName,
         Key: fileKey,
         Body: fileContent,
       })
-      .promise();
-    console.log(
-      `Successfully uploaded '${filePath}' to ${config.s3BucketName}`
     );
-  } catch (e) {
-    console.error(
-      `Failed to upload '${filePath}' to ${config.s3BucketName}`,
-      e
-    );
+    console.log(`File uploaded successfully. ${data}`);
+  } catch (err) {
+    console.error(`Error uploading file: ${err.message}`);
   }
+
+  return;
 }
