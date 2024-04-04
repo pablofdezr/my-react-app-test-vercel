@@ -1,6 +1,11 @@
 import AWS from "aws-sdk";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url"; // Import necesario para convertir URL a ruta de archivo
+
+// Obtén el __dirname en módulos ES
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const rootFolderName = process.env.BUILD_DIRECTORY || "dist";
 
