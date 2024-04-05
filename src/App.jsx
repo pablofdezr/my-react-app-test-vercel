@@ -25,6 +25,7 @@ function App() {
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
         <p>Probando con la nueva config. Finally!</p>
+        <p>Probando config nueva solo S3</p>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
